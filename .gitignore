@@ -1,5 +1,10 @@
+csv
 csv/*
+json
 json/*
 cache/*
+config.php.working
 client_secret.json
+google-api-php-client
+google-api-php-client/*
 tags

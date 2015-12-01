@@ -1,6 +1,6 @@
 # wechat_api
 
-git clone https://github.com/googleplus/gplus-quickstart-php.git
+git clone -b v1-master https://github.com/google/google-api-php-client.git
 
 php wechat_api.php
 

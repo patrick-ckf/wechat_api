@@ -12,12 +12,12 @@ class wechat
 	private $cache;
 	private $appid;
 	private $appsecret;
+	private $folder_id;
+	private $mime_type;
 	private $curl_ctx;
 	private $parallel_curl;
 	private $client;
 	private $service;
-	const upload_mime_type = 'text/csv';
-	const upload_folder_id = '0B-STO4-SWG_aQWhKNE9hc2hmNW8';
 	const GET_USER_LIST = '/user/get?';
 	const GET_USER_INFO = '/user/info?';
 	const GET_AUTOREPLY_INFO = '/get_current_autoreply_info?';
@@ -103,7 +103,7 @@ class wechat
 	        )
 	);
 
-	function __construct($appid, $appsecret) {
+	function __construct($appid, $appsecret, $mime_type, $folder_id) {
 		$curl_options = array(
     		CURLOPT_SSL_VERIFYPEER => FALSE,
     		CURLOPT_SSL_VERIFYHOST => FALSE,
@@ -116,9 +116,15 @@ class wechat
 		$this->parallel_curl = new ParallelCurl(100, $curl_options);
 		$this->appid = $appid;
 		$this->appsecret = $appsecret;
+		$this->mime_type = $mime_type;
+		$this->folder_id = $folder_id;
 		$this->cache = new Cache();
 		$this->cache->setCache('cache');
 		$this->get_token_from_wechat();
+
+		if (file_exists(__DIR__."/csv/") == false) {
+			mkdir (__DIR__."/csv/");
+		}
 
 		$this->client = getClient();
 		$this->service = new Google_Service_Drive($this->client);
@@ -204,10 +210,10 @@ class wechat
 		$fileId = searchFile($this->service, $title);
 		if ($fileId != null) {
 			echo __FUNCTION__.": updating file:".$filename." to google drive\n";
-			updateFile($this->service, $fileId, $title, $title, self::upload_mime_type, $filename, false);
+			updateFile($this->service, $fileId, $title, $title, $this->mime_type, $filename, false);
 		} else {
 			echo __FUNCTION__.": uploading file:".$filename." to google drive\n";
-			insertFile($this->service, $title, $title, self::upload_folder_id, self::upload_mime_type, $filename);
+			insertFile($this->service, $title, $title, $this->folder_id, $this->mime_type, $filename);
 		}
 	}
 	
@@ -499,7 +505,7 @@ class wechat
 		echo "\t10. exit: quit this program \n";
 	}
 
-	$wechat = new Wechat($appid, $appsecret);
+	$wechat = new Wechat($appid, $appsecret, $upload_mime_type, $upload_folder_id);
 	$user_list = array();
 	$user_info_list = array();
 
