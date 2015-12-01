@@ -5,7 +5,7 @@ Following the instructions to download the scret json file:
 [google php api tutorial link] (https://developers.google.com/drive/web/quickstart/php)
 
 Clone the google api for php from git:
-
+---------------------------------------
 git clone -b v1-master https://github.com/google/google-api-php-client.git
 
 Modify the following nside the config.php: 
