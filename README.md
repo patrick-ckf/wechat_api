@@ -1,23 +1,33 @@
-# wechat_api
+# Wechat_api
 
 Following the instructions to download the scret json file:
-
-https://developers.google.com/drive/web/quickstart/php
+----------------------------------------------------------
+[link] (https://developers.google.com/drive/web/quickstart/php)
 
 Clone the google api for php from git:
 
 git clone -b v1-master https://github.com/google/google-api-php-client.git
 
-php wechat_api.php
+Modify the following nside the config.php: 
+------------------------------------------ 
+$upload_mime_type='text/csv';  
+$upload_folder_id='FOLDER_ID';  
+$appid='APPID';  
+$appsecret='APPSECRET';  
 
-enter the url generated
+1. Replace the APPID and APPSECRET with your own set, which you can find out in Wechat backend.  
+2. Replace the FOLDER_ID with the destination google drive folder id  
 
-copy the token and paste in the command prompt
+Run the command:
+----------------
+*php wechat_api.php
 
-usage:
+1. enter the url generated
+2. copy the token and paste in the command prompt
 
-php wechat_api.php - collect the data yesterday
-
-php wechat_api.php yyyy-mm-dd - collect the data on specific day
+Usage: 
+------   
+* php wechat_api.php - collect the data yesterday
+* php wechat_api.php yyyy-mm-dd - collect the data on specific day
 
 output files would be generated to the directory "csv".
