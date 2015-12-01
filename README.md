@@ -2,7 +2,7 @@
 
 Following the instructions to download the scret json file:
 ----------------------------------------------------------
-[link] (https://developers.google.com/drive/web/quickstart/php)
+[google php api tutorial link] (https://developers.google.com/drive/web/quickstart/php)
 
 Clone the google api for php from git:
 
@@ -20,7 +20,7 @@ $appsecret='APPSECRET';
 
 Run the command:
 ----------------
-*php wechat_api.php
+* php wechat_api.php
 
 1. enter the url generated
 2. copy the token and paste in the command prompt
