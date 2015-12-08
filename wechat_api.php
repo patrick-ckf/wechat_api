@@ -3,8 +3,8 @@
 date_default_timezone_set("Asia/Hong_Kong");
 include_once 'parallelcurl.php';
 include_once 'cache.class.php';
-include_once 'config.php';
-//include_once 'config.php.working';
+//include_once 'config.php';
+include_once 'config.php.working';
 include_once 'google_php_api.php';
 set_time_limit(0);
 
@@ -176,6 +176,7 @@ class wechat
 		$json_data = json_decode($sContent);
 		if(intval($aStatus["http_code"]) == 200){
 			if (isset($json->errcode)) {
+				echo __FUNCTION__.": network error with error code: ".$json->errcode."\n";
 				if ($json->errcode == 40001) {
 					echo __FUNCTION__.": get token again\n";
 					$this->get_token_from_wechat();
@@ -189,16 +190,16 @@ class wechat
 			}
 		} else {
 			usleep(200);
-			echo __FUNCTION__.": network error\n";
+			echo __FUNCTION__.": network error with status code: ".$aStatus["http_code"]."\n";
 			return false;
 		}
 	}
 
 	function post_data($url, $data = NULL) {
-		$ret = $this->real_post_data($url, $data);
-		if ($ret == false || !isset($ret)) {
+		$ret = false;
+		do {
 			$ret = $this->real_post_data($url, $data);
-		}
+		} while ($ret == false);
 		return $ret;
 	}
 
@@ -210,10 +211,10 @@ class wechat
 	function upload_file_to_google_drive ($title, $filename) {
 		$fileId = searchFile($this->service, $title);
 		if ($fileId != null) {
-			echo __FUNCTION__.": updating file:".$filename." to google drive\n";
+			echo __FUNCTION__.": updating file: ".$filename." to google drive\n";
 			updateFile($this->service, $fileId, $title, $title, $this->mime_type, $filename, false);
 		} else {
-			echo __FUNCTION__.": uploading file:".$filename." to google drive\n";
+			echo __FUNCTION__.": uploading file: ".$filename." to google drive\n";
 			insertFile($this->service, $title, $title, $this->folder_id, $this->mime_type, $filename);
 		}
 	}
